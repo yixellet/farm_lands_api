@@ -21,7 +21,16 @@ function getLandusers(req, res) {
 function getLandInfo(req, res) {
   const query = new ParameterizedQuery(
     {
-      text: `SELECT uid, cn, area, cat, cost, concat(region, ', ', district, ', ', locality) AS location FROM farm_lands.lands WHERE cn = $1;`,
+      text: `SELECT l.cadastral_number,
+      l.subtype,
+      l.cat,
+      l.permitted_use,
+      l.area,
+      l.full_address,
+      l.cost,
+      concat(l.region, ', ', l.district) AS location
+    FROM farm_lands.lands_import l
+    WHERE l.cadastral_number = $1;`,
       values: [req.query.cn]
     },
   );

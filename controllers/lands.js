@@ -2,20 +2,13 @@ const { db } = require('./db');
 
 const { ParameterizedQuery } = require('pg-promise');
 
-function getActualRentedLands(req, res) {
+function getLandsNotInEGRN(req, res) {
   const query = new ParameterizedQuery(
     {
-      text: `SELECT json_build_object(
-        'type', 'FeatureCollection',
-        'crs', json_build_object(
-          'type', 'name',
-          'properties', json_build_object('name', 'EPSG:4326')
-        ),
-        'features', json_agg(ST_AsGeoJSON(l.*)::json)) as features
-        FROM farm_lands.all_rented_lands l;`,
+      text: `SELECT * FROM farm_lands.lands_not_in_egrn;`,
     },
   );
-  db.one(query)
+  db.any(query)
     .then((data) => {
       res.send(data);
     })
@@ -26,5 +19,5 @@ function getActualRentedLands(req, res) {
 };
 
 module.exports = {
-  getActualRentedLands
+  getLandsNotInEGRN
 };
