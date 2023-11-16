@@ -33,10 +33,16 @@ function getAllRentInfo(req, res) {
 function getRentsByLanduser(req, res) {
   const query = new ParameterizedQuery(
     {
-      text: `SELECT *
-            FROM rent_register r
-            WHERE r.landuser_uid = $1;`,
-      values: [req.query.cn]
+      text: `SELECT json_build_object(
+        'type', 'Feature',
+        'id', l.uid,
+        'geometry', ST_AsGeoJSON(ST_Transform(l.geom, 3857))::jsonb,
+        'properties', json_build_object('l', l.*, 'r', r.*)
+      )
+      FROM farm_lands.rent_register r
+        JOIN farm_lands.lands_import l USING (cadastral_number)
+      WHERE r.user_text = $1;`,
+      values: [req.query.user]
     },
   );
   db.any(query)
