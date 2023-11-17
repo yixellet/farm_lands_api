@@ -55,7 +55,31 @@ function getRentsByLanduser(req, res) {
     });
 };
 
+function getRentsGeom(req, res) {
+  const query = new ParameterizedQuery(
+    {
+      text: `SELECT json_build_object(
+        'type', 'FeatureCollection',
+        'features', json_agg(ST_AsGeoJSON(l.*)::json)
+      )
+      FROM farm_lands.rent_register r
+        JOIN farm_lands.lands_import l USING (cadastral_number)
+      WHERE r.user_text = $1;`,
+      values: [req.query.user]
+    },
+  );
+  db.one(query)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      console.log(error)
+      res.send({ error });
+    });
+};
+
 module.exports = {
   getAllRentInfo,
-  getRentsByLanduser
+  getRentsByLanduser,
+  getRentsGeom
 };
