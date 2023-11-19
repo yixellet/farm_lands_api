@@ -1,7 +1,7 @@
 module.exports = {
-  host: '172.17.13.6',
+  host: 'localhost',
   port: 5432,
   dbname: 'geodata',
   user: 'admin',
-  pass: 'Vl@8sC07IG',
+  pass: '07071907',
 }

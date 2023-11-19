@@ -35,7 +35,7 @@ function getRentsByLanduser(req, res) {
     {
       text: `SELECT json_build_object(
         'type', 'Feature',
-        'id', l.uid,
+        'id', r.uid,
         'geometry', ST_AsGeoJSON(ST_Transform(l.geom, 3857))::jsonb,
         'properties', json_build_object('l', l.*, 'r', r.*)
       )

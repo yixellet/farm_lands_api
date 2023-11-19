@@ -1,12 +1,13 @@
 const router = require('express').Router();
 
-const { getLandusers, getLandInfo } = require('../controllers');
+const { getLandInfo } = require('../controllers');
+const usersRouter = require('./users');
 const landsRouter = require('./lands');
 const rentsRouter = require('./rents');
 
-router.get('/landusers', getLandusers);
 router.get('/landinfo', getLandInfo)
 router.use('/rents', rentsRouter)
 router.use('/lands', landsRouter)
+router.use('/users', usersRouter);
 
 module.exports = router;
