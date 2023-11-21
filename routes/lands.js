@@ -1,5 +1,4 @@
-const { getLandInfo } = require('../controllers');
-const { getLandsNotInEGRN } = require('../controllers/lands');
+const { getLandsNotInEGRN, getLandInfo } = require('../controllers/lands');
 
 const router = require('express').Router();
 
